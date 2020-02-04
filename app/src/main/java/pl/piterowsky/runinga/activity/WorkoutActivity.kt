@@ -41,7 +41,7 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun onClickStopButton() {
-        val dialog = MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.end_workout_alert_title))
             .setMessage(getString(R.string.end_workout_alert_message))
             .setPositiveButton(
