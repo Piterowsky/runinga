@@ -31,14 +31,16 @@
                     android:layout_weight="1"
                     android:layout_margin="5dp"
                     android:backgroundTint="@color/red"
-                    android:text="Stop"/>
+                    style="?android:attr/borderlessButtonStyle"
+                    android:text="@string/workout_button_stop"/>
             <Button android:id="@+id/start_pause_button"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_margin="5dp"
                     android:backgroundTint="@color/light_green"
-                    android:text="Start"/>
+                    style="?android:attr/borderlessButtonStyle"
+                    android:text="@string/workout_button_start"/>
 
         </LinearLayout>
     </LinearLayout>

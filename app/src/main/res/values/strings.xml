@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Runinga</string>
+
+    <!-- Workout buttons -->
+    <string name="workout_button_start">Start</string>
+    <string name="workout_button_stop">Stop</string>
+    <string name="workout_button_pause">Pause</string>
+
+    <!-- End workout alert -->
+    <string name="end_workout_alert_title">End workout</string>
+    <string name="end_workout_alert_message">Are you sure you want end training?</string>
+    <string name="end_workout_alert_positive_button">Yes</string>
+    <string name="end_workout_toast_workout_ended">Workout ended</string>
 </resources>

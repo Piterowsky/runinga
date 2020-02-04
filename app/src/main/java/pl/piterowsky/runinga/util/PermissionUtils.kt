@@ -1,7 +1,3 @@
-/*
- * Copyright 2020 Asseco Data Systems SA. All Rights Reserved.
- */
-
 package pl.piterowsky.runinga.util
 
 import android.Manifest
@@ -11,7 +7,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
-class PermissionUtils private constructor(){
+class PermissionUtils private constructor() {
 
     companion object {
         private const val ACCESS_FINE_LOCATION_REQUEST_CODE = 100

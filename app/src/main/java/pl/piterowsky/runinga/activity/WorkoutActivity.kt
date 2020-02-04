@@ -12,10 +12,14 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.piterowsky.runinga.R
+import pl.piterowsky.runinga.service.api.WorkoutService
+import pl.piterowsky.runinga.service.impl.WorkoutServiceImpl
 import pl.piterowsky.runinga.util.ConstantsUtils
 import pl.piterowsky.runinga.util.PermissionUtils
 
 class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
+
+    private var workoutService: WorkoutService = WorkoutServiceImpl(this)
 
     private var map: GoogleMap? = null
     private var isWorkoutPaused: Boolean = false
@@ -37,26 +41,29 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun onClickStopButton() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Zakończ trening")
-            .setMessage("Czy na pewno chcesz zakończyć trening")
-            .setPositiveButton("OK", DialogInterface.OnClickListener { _, _ ->  onTrainingEnd() })
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.end_workout_alert_title))
+            .setMessage(getString(R.string.end_workout_alert_message))
+            .setPositiveButton(
+                getString(R.string.end_workout_alert_positive_button),
+                DialogInterface.OnClickListener { _, _ ->
+                    Toast.makeText(this, getString(R.string.end_workout_toast_workout_ended), Toast.LENGTH_SHORT).show()
+                    workoutService.workoutStop()
+                })
             .show()
-    }
-
-    private fun onTrainingEnd() {
-        Toast.makeText(this, "Training end", Toast.LENGTH_SHORT).show()
     }
 
     private fun onClickStartPauseButton(button: Button) {
         if (isWorkoutPaused) {
-            button.text = "Start"
+            button.text = getString(R.string.workout_button_start)
             button.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.light_green, null))
             isWorkoutPaused = false
+            workoutService.workoutPause()
         } else {
-            button.text = "Pause"
+            button.text = getString(R.string.workout_button_pause)
             button.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.light_yellow, null))
             isWorkoutPaused = true
+            workoutService.workoutStart()
         }
     }
 
