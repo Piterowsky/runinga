@@ -1,10 +1,9 @@
 package pl.piterowsky.runinga.activity
 
 import android.content.DialogInterface
-import android.content.res.Resources
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -36,6 +35,11 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
         setupMapFragment()
         setupButtons()
         PermissionUtils.requestPermissions(this);
+    }
+
+    private fun setupChronometerContainer() {
+        val chronometerContainer = findViewById<RelativeLayout>(R.id.workout_chronometer_container)
+        chronometerContainer.translationY = -(chronometerContainer.height.toFloat())
     }
 
     override fun onMapReady(map: GoogleMap?) {
@@ -73,7 +77,7 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
                 DialogInterface.OnClickListener { _, _ ->
                     Toast.makeText(this, getString(R.string.end_workout_toast_workout_ended), Toast.LENGTH_SHORT).show()
                     workoutService.workoutStop()
-                    finish() // TODO: Go to the new intent: Workout summary
+                    finish() // TODO: Go to the new intent -> Workout summary
                 })
             .show()
     }
@@ -85,11 +89,17 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
             isWorkoutPaused = false
             workoutService.workoutPause()
         } else {
+            //doChronometerContainerSlideDownAnimation()
             button.text = getString(R.string.workout_button_pause)
             button.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.light_yellow, null))
             isWorkoutPaused = true
             workoutService.workoutStart()
         }
+    }
+
+    private fun doChronometerContainerSlideDownAnimation() {
+        val chronometerContainer = findViewById<RelativeLayout>(R.id.workout_chronometer_container)
+        chronometerContainer.animate().setDuration(500).translationY(0f)
     }
 
     private fun setupMapFragment() {
