@@ -11,10 +11,20 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/LightTheme">
+        <activity
+                android:name=".MainMenu"
+                android:label="@string/main_menu_title"
+                android:theme="@style/LightTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
 
         <meta-data
                 android:name="com.google.android.gms.version"
-                android:value="@integer/google_play_services_version" />
+                android:value="@integer/google_play_services_version"/>
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="AIzaSyA8S-E4eL_DSbdhEiWrJXiYed2Dmd0M0A0"/>
@@ -23,6 +33,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>

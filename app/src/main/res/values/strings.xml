@@ -11,4 +11,11 @@
     <string name="end_workout_alert_message">Are you sure you want end training?</string>
     <string name="end_workout_alert_positive_button">Yes</string>
     <string name="end_workout_toast_workout_ended">Workout ended</string>
+
+    <!-- Main menu -->
+    <string name="main_menu_title">MainMenu</string>
+    <string name="main_menu_quick_start">Quick Start</string>
+    <string name="main_menu_virtual_rival">Virtual Rival</string>
+    <string name="main_menu_history">History</string>
+    <string name="main_menu_settings">Settings</string>
 </resources>
