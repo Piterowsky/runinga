@@ -32,7 +32,7 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
     private lateinit var workoutTimer: Timer
 
     override fun workoutStart() {
-        chronometerWrapper = ChronometerWrapper.getInstance(context)
+        chronometerWrapper = ChronometerWrapper.getInstance(context)!!
         geolocationService = GeolocationService(context)
         workout = Workout()
         chronometerWrapper.start()
@@ -102,11 +102,12 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
     class ChronometerWrapper private constructor(context: Context) {
 
         companion object {
-            private lateinit var INSTANCE: ChronometerWrapper
-            private val initialized = AtomicBoolean()
+            private var INSTANCE: ChronometerWrapper? = null
+            private var initialized: Boolean = false
 
-            fun getInstance(context: Context): ChronometerWrapper {
-                if(initialized.getAndSet(true)) {
+            fun getInstance(context: Context): ChronometerWrapper? {
+                if(!initialized) {
+                    initialized  = true
                     INSTANCE = ChronometerWrapper(context)
                 }
                 return INSTANCE
@@ -117,26 +118,29 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
         private var timeWhenStopped: Long = 0
 
         init {
+            chronometer.base = SystemClock.elapsedRealtime()
             chronometer.onChronometerTickListener = OnChronometerTickListener { chronometer ->
-                val t = SystemClock.elapsedRealtime() - chronometer.base
+                val t = SystemClock.elapsedRealtime() - chronometer.base - TimeZone.getDefault().rawOffset
                 chronometer.text = DateFormat.format("kk:mm:ss", t)
             }
         }
 
         fun start() {
             chronometer.base = SystemClock.elapsedRealtime() + timeWhenStopped;
-            chronometer.start();
+            chronometer.start()
         }
 
         fun stop() {
             chronometer.base = SystemClock.elapsedRealtime();
-            timeWhenStopped = 0;
+            timeWhenStopped = 0
             chronometer.stop()
+            initialized = false
+            INSTANCE = null
         }
 
         fun pause() {
             timeWhenStopped = chronometer.base - SystemClock.elapsedRealtime()
-            chronometer.stop();
+            chronometer.stop()
         }
 
     }
