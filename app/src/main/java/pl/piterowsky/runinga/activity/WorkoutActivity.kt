@@ -73,6 +73,7 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
                 DialogInterface.OnClickListener { _, _ ->
                     Toast.makeText(this, getString(R.string.end_workout_toast_workout_ended), Toast.LENGTH_SHORT).show()
                     workoutService.workoutStop()
+                    finish() // TODO: Go to the new intent: Workout summary
                 })
             .show()
     }
