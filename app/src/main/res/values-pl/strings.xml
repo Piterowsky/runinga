@@ -18,4 +18,8 @@
     <string name="main_menu_virtual_rival">Wirtualny przeciwnik</string>
     <string name="main_menu_history">Historia</string>
     <string name="main_menu_settings">Ustawienia</string>
+    <string name="workout_label_distance">Dystans</string>
+    <string name="workout_value_distance_default">0 km</string>
+    <string name="workout_value_distance_pattern">%1$s km</string>
+
 </resources>

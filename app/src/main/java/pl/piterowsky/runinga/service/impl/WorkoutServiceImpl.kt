@@ -7,8 +7,10 @@ import android.text.format.DateFormat
 import android.util.Log
 import android.widget.Chronometer
 import android.widget.Chronometer.OnChronometerTickListener
+import android.widget.TextView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import pl.piterowsky.runinga.R
 import pl.piterowsky.runinga.activity.WorkoutActivity
 import pl.piterowsky.runinga.config.Settings
@@ -17,9 +19,7 @@ import pl.piterowsky.runinga.model.Workout
 import pl.piterowsky.runinga.service.api.WorkoutService
 import pl.piterowsky.runinga.util.LoggerTag
 import java.util.*
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.concurrent.scheduleAtFixedRate
-import kotlin.properties.Delegates
 
 
 class WorkoutServiceImpl(private val context: Context) : WorkoutService {
@@ -42,7 +42,6 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
     override fun workoutStop() {
         stopTimer()
         chronometerWrapper.stop()
-        workout.workoutEndTimestamp = System.nanoTime()
         geolocationService.stopTracking()
     }
 
@@ -64,11 +63,12 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
 
         workoutTimer = Timer(timerName, false)
         workoutTimer.scheduleAtFixedRate(0L, Settings.TIMER_DELAY_VALUE) {
-            val steps = workout.steps
+            val steps = workout.getSteps()
             Log.i(LoggerTag.TAG_WORKOUT_TIMER, "Timer next iteration, StepsSize=${steps.size}")
             updateSteps()
-            if(steps.isNotEmpty()) {
+            if (steps.isNotEmpty()) {
                 updateMap(steps[steps.lastIndex].latLng)
+                updateStats()
             }
         }
     }
@@ -80,6 +80,9 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
         context.runOnUiThread() {
             val points = workoutActivity.polyline.points
             points.add(currentPosition)
+
+            workoutActivity.currentPositionMarker.position = currentPosition
+
             workoutActivity.polyline.points = points
             workoutActivity.map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, Settings.ZOOM_VALUE))
         }
@@ -91,13 +94,22 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
             val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
             val step = Step(latLng, System.currentTimeMillis())
 
-            workout.steps.add(step)
+            workout.addStep(step)
 
             Log.w(LoggerTag.TAG_WORKOUT, "New step, Step=${step}")
         } else {
             Log.w(LoggerTag.TAG_WORKOUT, "Location didn't change")
         }
     }
+
+    private fun updateStats() {
+        val distance = (context as WorkoutActivity).findViewById<TextView>(R.id.distance)
+        context.runOnUiThread() {
+            distance.text =
+                String.format(context.getString(R.string.workout_value_distance_pattern), workout.getDistanceInKilometers())
+        }
+    }
+
 
     class ChronometerWrapper private constructor(context: Context) {
 
@@ -106,8 +118,8 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
             private var initialized: Boolean = false
 
             fun getInstance(context: Context): ChronometerWrapper? {
-                if(!initialized) {
-                    initialized  = true
+                if (!initialized) {
+                    initialized = true
                     INSTANCE = ChronometerWrapper(context)
                 }
                 return INSTANCE

@@ -11,8 +11,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.Polyline
-import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.piterowsky.runinga.R
 import pl.piterowsky.runinga.config.Settings
@@ -28,6 +27,7 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var polyline: Polyline
     lateinit var map: GoogleMap
+    lateinit var currentPositionMarker: Marker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +45,10 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap?) {
         this.map = map!!
         map.uiSettings.isRotateGesturesEnabled = false
+        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(ConstantsUtils.centerOfEarth, 0f))
         setupMapPath(map)
+        currentPositionMarker = map.addMarker(MarkerOptions().position(ConstantsUtils.centerOfEarth))
     }
 
     private fun setupMapPath(map: GoogleMap) {
