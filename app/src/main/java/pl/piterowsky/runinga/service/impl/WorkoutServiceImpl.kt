@@ -10,7 +10,6 @@ import android.widget.Chronometer.OnChronometerTickListener
 import android.widget.TextView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import pl.piterowsky.runinga.R
 import pl.piterowsky.runinga.activity.WorkoutActivity
 import pl.piterowsky.runinga.config.Settings
@@ -48,7 +47,7 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
     override fun workoutPause() {
         Log.i(LoggerTag.TAG_WORKOUT_TIMER, "Pausing timer")
         chronometerWrapper.pause()
-        workoutTimer.cancel();
+        workoutTimer.cancel()
     }
 
     private fun stopTimer() {
@@ -138,12 +137,12 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
         }
 
         fun start() {
-            chronometer.base = SystemClock.elapsedRealtime() + timeWhenStopped;
+            chronometer.base = SystemClock.elapsedRealtime() + timeWhenStopped
             chronometer.start()
         }
 
         fun stop() {
-            chronometer.base = SystemClock.elapsedRealtime();
+            chronometer.base = SystemClock.elapsedRealtime()
             timeWhenStopped = 0
             chronometer.stop()
             initialized = false

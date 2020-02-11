@@ -21,5 +21,7 @@
     <string name="workout_label_distance">Dystans</string>
     <string name="workout_value_distance_default">0 km</string>
     <string name="workout_value_distance_pattern">%1$s km</string>
+    <string name="gps.alert.title">GPS zablokowany</string>
+    <string name="gps.alert.message">Proszę włączyć GPS w celu lepszej dokładności</string>
 
 </resources>

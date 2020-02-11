@@ -7,13 +7,15 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import pl.piterowsky.runinga.R
 import pl.piterowsky.runinga.util.LoggerTag
 
 // TODO: Add asking for gps when disabled
 class GeolocationService(private val context: Context) : LocationListener {
 
     var currentLocation: Location? = null
-    var locationManager: LocationManager? = null
+    private lateinit var locationManager: LocationManager
 
     override fun onLocationChanged(location: Location?) {
         if (location != null) {
@@ -37,16 +39,23 @@ class GeolocationService(private val context: Context) : LocationListener {
     }
 
     fun startTracking() {
-        locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+        locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        val trustedLocationManager: LocationManager = locationManager?:return
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.gps_alert_title))
+                .setMessage(context.getString(R.string.gps_alert_message))
+                .show()
+        }
+
+        val trustedLocationManager: LocationManager = locationManager
 
         val criteria = Criteria()
         criteria.accuracy = Criteria.ACCURACY_FINE
         criteria.powerRequirement = Criteria.POWER_HIGH
 
-        val provider: String = trustedLocationManager.getBestProvider(criteria, true)?:""
-        if(provider.isBlank()) {
+        val provider: String = trustedLocationManager.getBestProvider(criteria, true) ?: ""
+        if (provider.isBlank()) {
             Log.w(LoggerTag.TAG_LOCATION, "Cannot get provider")
             return
         }
@@ -61,7 +70,6 @@ class GeolocationService(private val context: Context) : LocationListener {
     }
 
     fun stopTracking() {
-        locationManager?.removeUpdates(this)
-        locationManager = null
+        locationManager.removeUpdates(this)
     }
 }
