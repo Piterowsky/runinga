@@ -2,6 +2,8 @@ package pl.piterowsky.runinga.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -19,8 +21,13 @@ class PreRivalWorkoutActivity : AppCompatActivity() {
     }
 
     private fun handleStartButton() {
-        Settings.pace = findViewById<EditText>(R.id.pace_field).text.toString().toDouble()
+        val paceMin = findViewById<EditText>(R.id.pace_field_min).text.toString()
+        val paceSec = findViewById<EditText>(R.id.pace_field_sec).text.toString()
+        Settings.RivalMode.pace = convertPaceToDouble(paceMin, paceSec)
         startActivity(Intent(this, WorkoutActivity::class.java))
     }
+
+    private fun convertPaceToDouble(paceMin: String, paceSec: String) =
+        paceMin.toDouble() + (paceSec.toDouble() / 100) * 1.66
 
 }

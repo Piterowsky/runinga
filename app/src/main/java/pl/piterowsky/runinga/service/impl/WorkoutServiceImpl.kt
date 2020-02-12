@@ -61,14 +61,14 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
         geolocationService.startTracking()
 
         workoutTimer = Timer(timerName, false)
-        workoutTimer.scheduleAtFixedRate(0L, Settings.TIMER_DELAY_VALUE) {
+        workoutTimer.scheduleAtFixedRate(0L, Settings.Global.TIMER_DELAY_VALUE) {
             val steps = workout.getSteps()
             Log.i(LoggerTag.TAG_WORKOUT_TIMER, "Timer next iteration, StepsSize=${steps.size}")
             updateSteps()
             if (steps.isNotEmpty()) {
                 updateMap(steps[steps.lastIndex].latLng)
-                updateStats()
             }
+            updateStats()
         }
     }
 
@@ -83,7 +83,12 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
             workoutActivity.currentPositionMarker.position = currentPosition
 
             workoutActivity.polyline.points = points
-            workoutActivity.map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, Settings.ZOOM_VALUE))
+            workoutActivity.map.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    currentPosition,
+                    Settings.Global.ZOOM_VALUE
+                )
+            )
         }
     }
 
@@ -105,7 +110,18 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
         val distance = (context as WorkoutActivity).findViewById<TextView>(R.id.distance)
         context.runOnUiThread() {
             distance.text =
-                String.format(context.getString(R.string.workout_value_distance_pattern), workout.getDistanceInKilometers())
+                String.format(
+                    context.getString(R.string.workout_value_distance_pattern),
+                    workout.getDistanceInKilometers(workout.getDistance())
+                )
+
+            if (Settings.RivalMode.isActive) {
+                context.findViewById<TextView>(R.id.distance_rival_difference).text =
+                    String.format(
+                        context.getString(R.string.workout_value_distance_pattern),
+                        workout.getDistanceInKilometers(workout.getRivalDistance())
+                    )
+            }
         }
     }
 

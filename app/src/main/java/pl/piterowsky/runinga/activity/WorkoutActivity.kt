@@ -2,8 +2,11 @@ package pl.piterowsky.runinga.activity
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.transition.Visibility
+import android.view.View
 import android.widget.Button
 import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -34,7 +37,10 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.workout_activity)
         setupMapFragment()
         setupButtons()
-        PermissionUtils.requestPermissions(this);
+        PermissionUtils.requestPermissions(this)
+        if(!Settings.RivalMode.isActive) {
+            findViewById<TextView>(R.id.distance_rival_difference).visibility = View.INVISIBLE
+        }
     }
 
     private fun setupChronometerContainer() {
@@ -53,7 +59,7 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setupMapPath(map: GoogleMap) {
         val polylineOptions = PolylineOptions()
-        polylineOptions.color(Settings.PATH_COLOR)
+        polylineOptions.color(Settings.Global.PATH_COLOR)
         polylineOptions.width(5f)
         this.polyline = map.addPolyline(polylineOptions)
     }

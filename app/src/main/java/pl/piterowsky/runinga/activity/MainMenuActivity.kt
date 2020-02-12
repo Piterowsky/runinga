@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import pl.piterowsky.runinga.R
+import pl.piterowsky.runinga.config.Settings
 
 
 class MainMenuActivity : AppCompatActivity() {
@@ -36,10 +37,12 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     private fun handleQuickStartButton() {
+        Settings.RivalMode.isActive = false
         startActivity(Intent(this, WorkoutActivity::class.java))
     }
 
     private fun handleRivalWorkoutButton() {
+        Settings.RivalMode.isActive = true
         startActivity(Intent(this, PreRivalWorkoutActivity::class.java))
     }
 

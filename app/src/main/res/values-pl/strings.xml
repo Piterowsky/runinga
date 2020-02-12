@@ -26,5 +26,6 @@
     <string name="pre.rival.workout.start">Rozpocznij trening</string>
     <string name="pre.rival.workout.pace.unit">min/km</string>
     <string name="pre.rival.workout.pace">Tempo</string>
+    <string name="workout_label_distance_to_rival">Dystans do rywala</string>
 
 </resources>
