@@ -6,6 +6,8 @@ class Settings {
     companion object {
         const val ZOOM_VALUE: Float = 17f
         const val PATH_COLOR: Int = Color.MAGENTA
-        const val TIMER_DELAY_VALUE: Long = 5000L
+        const val TIMER_DELAY_VALUE: Long = 2000L
+
+        var pace: Double = 5.0
     }
 }

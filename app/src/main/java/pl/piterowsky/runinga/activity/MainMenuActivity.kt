@@ -1,13 +1,13 @@
-package pl.piterowsky.runinga
+package pl.piterowsky.runinga.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import pl.piterowsky.runinga.activity.WorkoutActivity
+import pl.piterowsky.runinga.R
 
 
-class MainMenu : AppCompatActivity() {
+class MainMenuActivity : AppCompatActivity() {
 
     private lateinit var quickStartButton: Button
     private lateinit var virtualRivalButton: Button
@@ -25,18 +25,22 @@ class MainMenu : AppCompatActivity() {
 
     private fun setupButtonsHandlers() {
         quickStartButton.setOnClickListener() { handleQuickStartButton() }
+        virtualRivalButton.setOnClickListener() { handleRivalWorkoutButton() }
     }
 
     private fun setupButtons() {
-        quickStartButton = findViewById<Button>(R.id.quick_start)
-        virtualRivalButton = findViewById<Button>(R.id.virtual_rival)
-        historyButton = findViewById<Button>(R.id.history)
-        settingsButton = findViewById<Button>(R.id.settings)
+        quickStartButton = findViewById(R.id.quick_start)
+        virtualRivalButton = findViewById(R.id.virtual_rival)
+        historyButton = findViewById(R.id.history)
+        settingsButton = findViewById(R.id.settings)
     }
 
     private fun handleQuickStartButton() {
-        val workoutIntent = Intent(this, WorkoutActivity::class.java)
-        startActivity(workoutIntent)
+        startActivity(Intent(this, WorkoutActivity::class.java))
+    }
+
+    private fun handleRivalWorkoutButton() {
+        startActivity(Intent(this, PreRivalWorkoutActivity::class.java))
     }
 
     private fun setupAnimations() {

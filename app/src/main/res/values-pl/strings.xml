@@ -23,5 +23,8 @@
     <string name="workout_value_distance_pattern">%1$s km</string>
     <string name="gps.alert.title">GPS zablokowany</string>
     <string name="gps.alert.message">Proszę włączyć GPS w celu lepszej dokładności</string>
+    <string name="pre.rival.workout.start">Rozpocznij trening</string>
+    <string name="pre.rival.workout.pace.unit">min/km</string>
+    <string name="pre.rival.workout.pace">Tempo</string>
 
 </resources>
