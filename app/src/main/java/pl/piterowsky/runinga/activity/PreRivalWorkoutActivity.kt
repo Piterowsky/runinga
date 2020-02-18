@@ -1,9 +1,12 @@
 package pl.piterowsky.runinga.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -32,8 +35,8 @@ class PreRivalWorkoutActivity : AppCompatActivity() {
         startButton = findViewById(R.id.pre_workout_start_workout)
 
         startButton.setOnClickListener { handleStartButton() }
-        paceMinutes.addTextChangedListener(getRegexTextWatcher(MINUTES_PATTERN, 1))
-        paceSeconds.addTextChangedListener(getRegexTextWatcher(SECONDS_PATTERN, 2))
+        paceMinutes.addTextChangedListener(getMinutesTextWatcher())
+        paceSeconds.addTextChangedListener(getSecondsTextWatcher())
     }
 
     private fun handleStartButton() {
@@ -41,14 +44,16 @@ class PreRivalWorkoutActivity : AppCompatActivity() {
         startActivity(Intent(this, WorkoutActivity::class.java))
     }
 
-    private fun getRegexTextWatcher(pattern: String, fieldLength: Int): TextWatcher {
+    private fun getMinutesTextWatcher(): TextWatcher {
         return object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val text = s.toString()
                 val length = text.length
 
-                if (length > (fieldLength - 1) && !Pattern.matches(pattern, text)) {
+                if (length > 0 && !Pattern.matches(MINUTES_PATTERN, text)) {
                     s!!.delete(length - 1, length)
+                } else {
+                    paceSeconds.requestFocus()
                 }
             }
 
@@ -59,6 +64,38 @@ class PreRivalWorkoutActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 /* no implementation */
             }
+        }
+    }
+
+    private fun getSecondsTextWatcher(): TextWatcher {
+        return object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val text = s.toString()
+                val length = text.length
+
+                if (length > 1 && !Pattern.matches(SECONDS_PATTERN, text)) {
+                    s!!.delete(length - 1, length)
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                /* no implementation */
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(s!!.length == 2) {
+                    hideKeyboard()
+                }
+            }
+        }
+    }
+
+
+    private fun hideKeyboard() {
+        val view: View? = this.currentFocus
+        if (view != null) {
+            val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 
