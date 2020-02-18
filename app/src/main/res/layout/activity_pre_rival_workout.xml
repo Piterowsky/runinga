@@ -19,6 +19,22 @@
             android:layout_marginStart="50dp">
 
         <EditText
+                android:id="@+id/pace_field_min"
+                android:hint="0"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:maxLength="1"
+                android:textSize="100sp"/>
+        <TextView
+                android:text=":"
+                android:textSize="100sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pace_separator"/>
+        <EditText
                 android:hint="00"
                 android:textAlignment="center"
                 android:layout_width="125sp"
@@ -29,21 +45,6 @@
                 android:id="@+id/pace_field_sec"
                 android:textSize="100sp"
         />
-        <TextView
-                android:text=":"
-                android:textSize="100sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/pace_separator"/>
-        <EditText
-                android:hint="0"
-                android:textAlignment="center"
-                android:layout_width="60sp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:maxLength="1"
-                android:id="@+id/pace_field_min"
-                android:textSize="100sp"/>
         <TextView
                 android:text="@string/pre.rival.workout.pace.unit"
                 android:layout_width="wrap_content"
