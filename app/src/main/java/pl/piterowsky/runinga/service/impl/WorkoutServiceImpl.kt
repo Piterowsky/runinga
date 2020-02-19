@@ -29,19 +29,24 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
     private lateinit var geolocationService: GeolocationService
     private lateinit var workout: Workout
     private lateinit var workoutTimer: Timer
+    private var isWorkoutInitialized: Boolean = false
 
     override fun workoutStart() {
         chronometerWrapper = ChronometerWrapper.getInstance(context)!!
         geolocationService = GeolocationService(context)
-        workout = Workout()
         chronometerWrapper.start()
         startTimer()
+        if(!isWorkoutInitialized) {
+            workout = Workout()
+            isWorkoutInitialized = true
+        }
     }
 
     override fun workoutStop() {
         stopTimer()
         chronometerWrapper.stop()
         geolocationService.stopTracking()
+        isWorkoutInitialized = false
     }
 
     override fun workoutPause() {
