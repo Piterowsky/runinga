@@ -25,14 +25,20 @@ class Workout {
 
             distance += WorkoutUtils.calculateDistanceInMeters(prevStep.latLng, step.latLng)
             if(Settings.RivalMode.isActive) {
-                val timeToDoubleConverter = 1.66
-                rivalDistance +=  (Settings.Global.TIMER_DELAY_VALUE / 100) * timeToDoubleConverter / Settings.RivalMode.pace
+                val delayUnitInSeconds = Settings.Global.TIMER_DELAY_VALUE / 1000
+                rivalDistance += delayUnitInSeconds.toDouble() / Settings.RivalMode.paceInSeconds
             }
         }
     }
 
     fun getDistanceInKilometers(distance: Double): String {
         return BigDecimal(distance / 1000)
+            .round(MathContext(2, RoundingMode.DOWN))
+            .toString()
+    }
+
+    fun getDistance(distance: Double): String {
+        return BigDecimal(distance)
             .round(MathContext(2, RoundingMode.DOWN))
             .toString()
     }

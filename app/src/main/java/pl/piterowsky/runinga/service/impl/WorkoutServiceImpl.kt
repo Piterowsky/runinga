@@ -119,7 +119,7 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
                 context.findViewById<TextView>(R.id.distance_rival_difference).text =
                     String.format(
                         context.getString(R.string.workout_value_distance_pattern),
-                        workout.getDistanceInKilometers(workout.getRivalDistance())
+                        workout.getDistance(workout.getRivalDistance())
                     )
             }
         }

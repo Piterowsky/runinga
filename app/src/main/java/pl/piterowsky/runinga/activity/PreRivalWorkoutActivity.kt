@@ -40,7 +40,7 @@ class PreRivalWorkoutActivity : AppCompatActivity() {
     }
 
     private fun handleStartButton() {
-        Settings.RivalMode.pace = convertPaceToDouble(paceMinutes.text.toString(), paceSeconds.text.toString())
+        Settings.RivalMode.paceInSeconds = convertPaceToSeconds(paceMinutes.text.toString(), paceSeconds.text.toString())
         startActivity(Intent(this, WorkoutActivity::class.java))
     }
 
@@ -52,7 +52,9 @@ class PreRivalWorkoutActivity : AppCompatActivity() {
 
                 if (length > 0 && !Pattern.matches(MINUTES_PATTERN, text)) {
                     s!!.delete(length - 1, length)
-                } else {
+                }
+
+                if(length == 1) {
                     paceSeconds.requestFocus()
                 }
             }
@@ -99,7 +101,10 @@ class PreRivalWorkoutActivity : AppCompatActivity() {
         }
     }
 
-    private fun convertPaceToDouble(paceMin: String, paceSec: String) =
-        paceMin.toDouble() + (paceSec.toDouble() / 100) * 1.66
+    private fun convertPaceToSeconds(paceMin: String, paceSec: String): Int{
+        val minutesInSeconds: Int = paceMin.toInt() * 60
+        val seconds: Int = paceSec.toInt()
+        return minutesInSeconds + seconds
+    }
 
 }
