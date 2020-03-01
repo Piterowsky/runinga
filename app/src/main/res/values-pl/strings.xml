@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Runinga</string>
 
     <!-- Workout buttons -->
     <string name="workout_button_start">Start</string>
@@ -10,7 +9,7 @@
     <string name="end_workout_alert_title">Koniec treningu</string>
     <string name="end_workout_alert_message">Czy na pewno chcesz zakończyć trening?</string>
     <string name="end_workout_alert_positive_button">Tak</string>
-    <string name="end_workout_toast_workout_ended">Workout ended</string>
+    <string name="end_workout_toast_workout_ended">Trening zakończony</string>
 
     <!-- Main menu -->
     <string name="main_menu_title">Menu główne</string>
@@ -19,12 +18,9 @@
     <string name="main_menu_history">Historia</string>
     <string name="main_menu_settings">Ustawienia</string>
     <string name="workout_label_distance">Dystans</string>
-    <string name="workout_value_distance_default">0 km</string>
-    <string name="workout_value_distance_pattern">%1$s km</string>
     <string name="gps.alert.title">GPS zablokowany</string>
     <string name="gps.alert.message">Proszę włączyć GPS w celu lepszej dokładności</string>
     <string name="pre.rival.workout.start">Rozpocznij trening</string>
-    <string name="pre.rival.workout.pace.unit">min/km</string>
     <string name="pre.rival.workout.pace">Tempo</string>
     <string name="workout_label_distance_to_rival">Dystans do rywala</string>
 

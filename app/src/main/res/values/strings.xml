@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Runinga</string>
+    <string name="app_name" translatable="false">Runinga</string>
 
     <!-- Workout buttons -->
     <string name="workout_button_start">Start</string>
@@ -19,13 +19,13 @@
     <string name="main_menu_history">History</string>
     <string name="main_menu_settings">Settings</string>
     <string name="workout_label_distance">Distance</string>
-    <string name="workout_value_distance_default">0 km</string>
-    <string name="workout_value_distance_pattern">%1$s km</string>
+    <string name="workout_value_distance_pattern" translatable="false">%1$s km</string>
+    <string name="workout_value_distance_default" translatable="false">0 km</string>
     <string name="gps.alert.title">GPS disabled</string>
     <string name="gps.alert.message">Please turn on GPS for better experience</string>
-    <string name="pre.rival.workout.start">Rozpocznij trening</string>
-    <string name="pre.rival.workout.pace.unit">min/km</string>
-    <string name="pre.rival.workout.pace">Tempo</string>
-    <string name="workout_label_distance_to_rival">Dystans do rywala</string>
+    <string name="pre.rival.workout.start">Start workout</string>
+    <string name="pre.rival.workout.pace.unit" translatable="false">min/km</string>
+    <string name="pre.rival.workout.pace">Pace</string>
+    <string name="workout_label_distance_to_rival">Distance to rival</string>
 
 </resources>

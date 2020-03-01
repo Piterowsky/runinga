@@ -1,11 +1,10 @@
 package pl.piterowsky.runinga.activity
 
 import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
-import android.transition.Visibility
 import android.view.View
 import android.widget.Button
-import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +19,6 @@ import pl.piterowsky.runinga.R
 import pl.piterowsky.runinga.config.Settings
 import pl.piterowsky.runinga.service.api.WorkoutService
 import pl.piterowsky.runinga.service.impl.WorkoutServiceImpl
-import pl.piterowsky.runinga.util.ConstantsUtils
 import pl.piterowsky.runinga.util.PermissionUtils
 
 class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -37,24 +35,32 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.workout_activity)
         setupMapFragment()
         setupButtons()
+        setupRivalDistanceLabel()
         PermissionUtils.requestPermissions(this)
-        if(!Settings.RivalMode.isActive) {
-            findViewById<TextView>(R.id.distance_rival_difference).visibility = View.INVISIBLE
+    }
+
+    private fun setupRivalDistanceLabel() {
+        val rivalDistanceLabel = findViewById<TextView>(R.id.distance_rival_difference)
+        if (!Settings.RivalMode.isActive) {
+            rivalDistanceLabel.visibility = View.INVISIBLE
         }
     }
 
-    private fun setupChronometerContainer() {
-        val chronometerContainer = findViewById<RelativeLayout>(R.id.workout_chronometer_container)
-        chronometerContainer.translationY = -(chronometerContainer.height.toFloat())
+    public fun setRivalDistanceLabelColor() {
+        val rivalDistanceLabel = findViewById<TextView>(R.id.distance_rival_difference)
+        when (rivalDistanceLabel.text[0]) {
+            '-' -> rivalDistanceLabel.setTextColor(Color.BLUE)
+            '+' -> rivalDistanceLabel.setTextColor(Color.RED)
+        }
     }
 
     override fun onMapReady(map: GoogleMap?) {
         this.map = map!!
         map.uiSettings.isRotateGesturesEnabled = false
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(ConstantsUtils.centerOfEarth, 0f))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(Settings.Global.MAP_INITIAL_POINT, 0f))
         setupMapPath(map)
-        currentPositionMarker = map.addMarker(MarkerOptions().position(ConstantsUtils.centerOfEarth))
+        currentPositionMarker = map.addMarker(MarkerOptions().position(Settings.Global.MAP_INITIAL_POINT))
     }
 
     private fun setupMapPath(map: GoogleMap) {
@@ -97,17 +103,11 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
             isWorkoutPaused = false
             workoutService.workoutPause()
         } else {
-            //doChronometerContainerSlideDownAnimation()
             button.text = getString(R.string.workout_button_pause)
             button.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.light_yellow, null))
             isWorkoutPaused = true
             workoutService.workoutStart()
         }
-    }
-
-    private fun doChronometerContainerSlideDownAnimation() {
-        val chronometerContainer = findViewById<RelativeLayout>(R.id.workout_chronometer_container)
-        chronometerContainer.animate().setDuration(500).translationY(0f)
     }
 
     private fun setupMapFragment() {

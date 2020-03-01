@@ -98,11 +98,13 @@
                     app:layout_constraintBottom_toBottomOf="parent"/>
             <TextView
                     android:id="@+id/distance_rival_difference"
-                    android:text="+/- 0"
+                    android:text="0"
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toEndOf="@+id/distance"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginBottom="10dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

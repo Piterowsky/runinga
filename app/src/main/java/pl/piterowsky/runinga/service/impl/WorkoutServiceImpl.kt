@@ -16,6 +16,7 @@ import pl.piterowsky.runinga.config.Settings
 import pl.piterowsky.runinga.model.Step
 import pl.piterowsky.runinga.model.Workout
 import pl.piterowsky.runinga.service.api.WorkoutService
+import pl.piterowsky.runinga.util.DistanceUtils
 import pl.piterowsky.runinga.util.LoggerTag
 import java.util.*
 import kotlin.concurrent.scheduleAtFixedRate
@@ -32,14 +33,14 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
     private var isWorkoutInitialized: Boolean = false
 
     override fun workoutStart() {
-        chronometerWrapper = ChronometerWrapper.getInstance(context)!!
-        geolocationService = GeolocationService(context)
-        chronometerWrapper.start()
-        startTimer()
         if(!isWorkoutInitialized) {
             workout = Workout()
             isWorkoutInitialized = true
         }
+        chronometerWrapper = ChronometerWrapper.getInstance(context)!!
+        geolocationService = GeolocationService(context)
+        chronometerWrapper.start()
+        startTimer()
     }
 
     override fun workoutStop() {
@@ -117,19 +118,20 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
             distance.text =
                 String.format(
                     context.getString(R.string.workout_value_distance_pattern),
-                    workout.getDistanceInKilometers(workout.getDistance())
+                    DistanceUtils.getDistanceInRounded(workout.getDistance())
                 )
 
             if (Settings.RivalMode.isActive) {
                 context.findViewById<TextView>(R.id.distance_rival_difference).text =
                     String.format(
                         context.getString(R.string.workout_value_distance_pattern),
-                        workout.getDistance(workout.getRivalDistance())
+                        DistanceUtils.diff(workout.getRivalDistance(), workout.getDistance())
                     )
             }
+
+            context.setRivalDistanceLabelColor()
         }
     }
-
 
     class ChronometerWrapper private constructor(context: Context) {
 
@@ -152,8 +154,9 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
         init {
             chronometer.base = SystemClock.elapsedRealtime()
             chronometer.onChronometerTickListener = OnChronometerTickListener { chronometer ->
-                val t = SystemClock.elapsedRealtime() - chronometer.base - TimeZone.getDefault().rawOffset
-                chronometer.text = DateFormat.format("kk:mm:ss", t)
+                val time = SystemClock.elapsedRealtime() - chronometer.base - TimeZone.getDefault().rawOffset
+                val format = "kk:mm:ss"
+                chronometer.text = DateFormat.format(format, time)
             }
         }
 

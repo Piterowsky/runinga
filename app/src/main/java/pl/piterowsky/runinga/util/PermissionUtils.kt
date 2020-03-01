@@ -22,7 +22,7 @@ class PermissionUtils private constructor() {
             }
         }
 
-        fun isAccessFineLocationGranted(activity: Activity?): Boolean {
+        private fun isAccessFineLocationGranted(activity: Activity?): Boolean {
             return ContextCompat.checkSelfPermission(
                 activity!!,
                 Manifest.permission.ACCESS_FINE_LOCATION
