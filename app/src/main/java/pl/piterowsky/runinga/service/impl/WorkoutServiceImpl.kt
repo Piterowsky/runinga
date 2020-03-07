@@ -2,20 +2,17 @@ package pl.piterowsky.runinga.service.impl
 
 import android.content.Context
 import android.location.Location
-import android.os.SystemClock
-import android.text.format.DateFormat
 import android.util.Log
-import android.widget.Chronometer
-import android.widget.Chronometer.OnChronometerTickListener
 import android.widget.TextView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import pl.piterowsky.runinga.R
 import pl.piterowsky.runinga.activity.WorkoutActivity
+import pl.piterowsky.runinga.config.RivalMode
 import pl.piterowsky.runinga.config.Settings
-import pl.piterowsky.runinga.model.Step
-import pl.piterowsky.runinga.model.Workout
+import pl.piterowsky.runinga.model.*
 import pl.piterowsky.runinga.service.api.WorkoutService
+import pl.piterowsky.runinga.util.ChronometerWrapper
 import pl.piterowsky.runinga.util.DistanceUtils
 import pl.piterowsky.runinga.util.LoggerTag
 import java.util.*
@@ -33,8 +30,13 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
     private var isWorkoutInitialized: Boolean = false
 
     override fun workoutStart() {
+        val workoutMode: WorkoutMode = when(RivalMode.modeType) {
+            RivalMode.ModeType.PACE -> PaceWorkoutMode()
+            RivalMode.ModeType.DISTANCE_PER_TIME -> DistancePerTimeWorkoutMode()
+        }
+
         if(!isWorkoutInitialized) {
-            workout = Workout()
+            workout = Workout(workoutMode)
             isWorkoutInitialized = true
         }
         chronometerWrapper = ChronometerWrapper.getInstance(context)!!
@@ -121,65 +123,16 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
                     DistanceUtils.getDistanceInRounded(workout.getDistance())
                 )
 
-            if (Settings.RivalMode.isActive) {
+            if (RivalMode.isActive) {
                 context.findViewById<TextView>(R.id.distance_rival_difference).text =
                     String.format(
                         context.getString(R.string.workout_value_distance_pattern),
                         DistanceUtils.diff(workout.getRivalDistance(), workout.getDistance())
                     )
+                context.setRivalDistanceLabelColor()
             }
-
-            context.setRivalDistanceLabelColor()
         }
     }
-
-    class ChronometerWrapper private constructor(context: Context) {
-
-        companion object {
-            private var INSTANCE: ChronometerWrapper? = null
-            private var initialized: Boolean = false
-
-            fun getInstance(context: Context): ChronometerWrapper? {
-                if (!initialized) {
-                    initialized = true
-                    INSTANCE = ChronometerWrapper(context)
-                }
-                return INSTANCE
-            }
-        }
-
-        private var chronometer: Chronometer = (context as WorkoutActivity).findViewById(R.id.workout_chronometer)
-        private var timeWhenStopped: Long = 0
-
-        init {
-            chronometer.base = SystemClock.elapsedRealtime()
-            chronometer.onChronometerTickListener = OnChronometerTickListener { chronometer ->
-                val time = SystemClock.elapsedRealtime() - chronometer.base - TimeZone.getDefault().rawOffset
-                val format = "kk:mm:ss"
-                chronometer.text = DateFormat.format(format, time)
-            }
-        }
-
-        fun start() {
-            chronometer.base = SystemClock.elapsedRealtime() + timeWhenStopped
-            chronometer.start()
-        }
-
-        fun stop() {
-            chronometer.base = SystemClock.elapsedRealtime()
-            timeWhenStopped = 0
-            chronometer.stop()
-            initialized = false
-            INSTANCE = null
-        }
-
-        fun pause() {
-            timeWhenStopped = chronometer.base - SystemClock.elapsedRealtime()
-            chronometer.stop()
-        }
-
-    }
-
 }
 
 

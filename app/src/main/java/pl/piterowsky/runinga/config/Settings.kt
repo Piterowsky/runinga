@@ -12,12 +12,4 @@ class Settings {
             val MAP_INITIAL_POINT = LatLng(30.0, 31.0)
         }
     }
-
-    class RivalMode {
-        companion object {
-            var isActive: Boolean = false
-            var paceInSeconds: Int = 0
-        }
-    }
-
 }

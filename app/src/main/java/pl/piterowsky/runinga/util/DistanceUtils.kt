@@ -37,7 +37,7 @@ class DistanceUtils {
             }
         }
 
-        fun calculateDistanceInKilometers(p1: LatLng, p2: LatLng): Double {
+        fun getDistanceInKm(p1: LatLng, p2: LatLng): Double {
             val earthRadiusInKm = 6371e3
 
             val lat1 = Math.toRadians(p1.latitude)

@@ -18,10 +18,10 @@
     <string name="main_menu_history">Historia</string>
     <string name="main_menu_settings">Ustawienia</string>
     <string name="workout_label_distance">Dystans</string>
-    <string name="gps.alert.title">GPS zablokowany</string>
-    <string name="gps.alert.message">Proszę włączyć GPS w celu lepszej dokładności</string>
-    <string name="pre.rival.workout.start">Rozpocznij trening</string>
-    <string name="pre.rival.workout.pace">Tempo</string>
+    <string name="gps_alert_title">GPS zablokowany</string>
+    <string name="gps_alert_message">Proszę włączyć GPS w celu lepszej dokładności</string>
+    <string name="pre_rival_workout_start">Rozpocznij trening</string>
+    <string name="pre_rival_workout_pace">Tempo</string>
     <string name="workout_label_distance_to_rival">Dystans do rywala</string>
 
 </resources>

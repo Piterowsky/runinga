@@ -16,6 +16,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.piterowsky.runinga.R
+import pl.piterowsky.runinga.config.RivalMode
 import pl.piterowsky.runinga.config.Settings
 import pl.piterowsky.runinga.service.api.WorkoutService
 import pl.piterowsky.runinga.service.impl.WorkoutServiceImpl
@@ -41,12 +42,12 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setupRivalDistanceLabel() {
         val rivalDistanceLabel = findViewById<TextView>(R.id.distance_rival_difference)
-        if (!Settings.RivalMode.isActive) {
+        if (!RivalMode.isActive) {
             rivalDistanceLabel.visibility = View.INVISIBLE
         }
     }
 
-    public fun setRivalDistanceLabelColor() {
+    fun setRivalDistanceLabelColor() {
         val rivalDistanceLabel = findViewById<TextView>(R.id.distance_rival_difference)
         when (rivalDistanceLabel.text[0]) {
             '-' -> rivalDistanceLabel.setTextColor(Color.BLUE)
