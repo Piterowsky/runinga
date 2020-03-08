@@ -2,21 +2,27 @@ package pl.piterowsky.runinga.service.impl
 
 import android.content.Context
 import android.location.Location
+import android.media.MediaPlayer
 import android.util.Log
 import android.widget.TextView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import pl.piterowsky.runinga.R
 import pl.piterowsky.runinga.activity.WorkoutActivity
+import pl.piterowsky.runinga.config.Language
 import pl.piterowsky.runinga.config.RivalMode
 import pl.piterowsky.runinga.config.Settings
 import pl.piterowsky.runinga.model.*
+import pl.piterowsky.runinga.model.modes.DistancePerTimeWorkoutMode
+import pl.piterowsky.runinga.model.modes.PaceWorkoutMode
 import pl.piterowsky.runinga.service.api.WorkoutService
 import pl.piterowsky.runinga.util.ChronometerWrapper
 import pl.piterowsky.runinga.util.DistanceUtils
 import pl.piterowsky.runinga.util.LoggerTag
+import pl.piterowsky.runinga.util.VoicesService
 import java.util.*
 import kotlin.concurrent.scheduleAtFixedRate
+import kotlin.math.absoluteValue
 
 
 class WorkoutServiceImpl(private val context: Context) : WorkoutService {
@@ -27,15 +33,23 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
     private lateinit var geolocationService: GeolocationService
     private lateinit var workout: Workout
     private lateinit var workoutTimer: Timer
+    private lateinit var voicesService: VoicesService
+
     private var isWorkoutInitialized: Boolean = false
 
+    init {
+        if(RivalMode.isActive) {
+            voicesService = VoicesService()
+        }
+    }
+
     override fun workoutStart() {
-        val workoutMode: WorkoutMode = when(RivalMode.modeType) {
+        val workoutMode: WorkoutMode = when (RivalMode.modeType) {
             RivalMode.ModeType.PACE -> PaceWorkoutMode()
             RivalMode.ModeType.DISTANCE_PER_TIME -> DistancePerTimeWorkoutMode()
         }
 
-        if(!isWorkoutInitialized) {
+        if (!isWorkoutInitialized) {
             workout = Workout(workoutMode)
             isWorkoutInitialized = true
         }
@@ -69,14 +83,50 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
         geolocationService.startTracking()
 
         workoutTimer = Timer(timerName, false)
-        workoutTimer.scheduleAtFixedRate(0L, Settings.Global.TIMER_DELAY_VALUE) {
-            val steps = workout.getSteps()
-            Log.i(LoggerTag.TAG_WORKOUT_TIMER, "Timer next iteration, StepsSize=${steps.size}")
-            updateSteps()
-            if (steps.isNotEmpty()) {
-                updateMap(steps[steps.lastIndex].latLng)
-            }
-            updateStats()
+        workoutTimer.scheduleAtFixedRate(0L, Settings.TIMER_DELAY_VALUE) { timerAction() }
+    }
+
+    private fun timerAction() {
+        Log.i(LoggerTag.TAG_WORKOUT_TIMER, "Timer next iteration")
+
+        updateSteps()
+        updateUI()
+
+        if(RivalMode.isActive) {
+            playAudioPaceControl()
+            playDistanceReachedVoice()
+        }
+    }
+
+    private fun playDistanceReachedVoice() {
+        if (isDistanceReached() && !workout.isDistanceReached) {
+            workout.isDistanceReached = true
+            val voice = voicesService.reachedDistanceVoice
+            val mp: MediaPlayer = MediaPlayer.create(context, voice)
+            mp.start()
+        }
+    }
+
+    private fun isDistanceReached() = workout.getDistance() >= RivalMode.distance.toDouble()
+
+    private fun updateUI() {
+        val steps = workout.getSteps()
+        if (steps.isNotEmpty()) {
+            updateMap(steps[steps.lastIndex].latLng)
+        }
+        updateStats()
+    }
+
+    private fun playAudioPaceControl() {
+        val minimumDiffDistance = 0.05
+        val shouldReminderBePlayed = chronometerWrapper.getSeconds() % Settings.AUDIO_PACE_REMINDERS_FREQUENCY == 0 &&
+                (workout.getDistance() - workout.getRivalDistance()).absoluteValue > minimumDiffDistance
+
+        if (shouldReminderBePlayed) {
+            Log.i(LoggerTag.TAG_WORKOUT_TIMER, "Playing reminder, seconds = ${chronometerWrapper.getSeconds()}")
+            val voice = if (workout.isRivalWinning()) voicesService.speedUpVoice else voicesService.slowDownVoice
+            val mp: MediaPlayer = MediaPlayer.create(context, voice)
+            mp.start()
         }
     }
 
@@ -94,13 +144,14 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
             workoutActivity.map.moveCamera(
                 CameraUpdateFactory.newLatLngZoom(
                     currentPosition,
-                    Settings.Global.ZOOM_VALUE
+                    Settings.ZOOM_VALUE
                 )
             )
         }
     }
 
     private fun updateSteps() {
+        Log.i(LoggerTag.TAG_WORKOUT_TIMER, "StepsSize=${workout.getSteps().size}")
         val currentLocation: Location? = geolocationService.currentLocation
         if (currentLocation != null) {
             val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
@@ -120,7 +171,7 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
             distance.text =
                 String.format(
                     context.getString(R.string.workout_value_distance_pattern),
-                    DistanceUtils.getDistanceInRounded(workout.getDistance())
+                    DistanceUtils.getDistanceRounded(workout.getDistance())
                 )
 
             if (RivalMode.isActive) {

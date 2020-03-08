@@ -11,15 +11,15 @@ import kotlin.math.sqrt
 class DistanceUtils {
 
     companion object {
-        fun getDistanceInRounded(distance: Double): String {
+        fun getDistanceRounded(distance: Double): String {
             return BigDecimal(distance)
                 .setScale(2, RoundingMode.HALF_DOWN)
                 .toString()
         }
 
         fun diff(distanceA: Double, distanceB: Double): String {
-            val distanceARounded: String = getDistanceInRounded(distanceA)
-            val distanceBRounded: String = getDistanceInRounded(distanceB)
+            val distanceARounded: String = getDistanceRounded(distanceA)
+            val distanceBRounded: String = getDistanceRounded(distanceB)
             val diff: String = BigDecimal(distanceARounded)
                 .subtract(BigDecimal(distanceBRounded))
                 .abs()

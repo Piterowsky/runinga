@@ -1,7 +1,8 @@
-package pl.piterowsky.runinga.model
+package pl.piterowsky.runinga.model.modes
 
 import pl.piterowsky.runinga.config.RivalMode
 import pl.piterowsky.runinga.config.Settings
+import pl.piterowsky.runinga.model.WorkoutMode
 import pl.piterowsky.runinga.util.TimeUtils
 
 class PaceWorkoutMode : WorkoutMode {
@@ -17,10 +18,10 @@ class PaceWorkoutMode : WorkoutMode {
      * 2s * 1km / 60s = Distance that rival traveled by the time 2s
      */
     override fun calculateRivalDistanceOnUnitTime(): Double {
-        val delayUnitInSeconds = Settings.Global.TIMER_DELAY_VALUE / 1000
+        val delayUnitInSeconds = Settings.TIMER_DELAY_VALUE / 1000
         val oneKilometer = 1
 
         val format = TimeUtils.Format.PACE_FORMAT
-        return delayUnitInSeconds.toDouble() * oneKilometer / TimeUtils.stringToSeconds(format, RivalMode.pace)
+        return delayUnitInSeconds.toDouble() * oneKilometer / TimeUtils.stringToSecondsShortFormat(format, RivalMode.pace)
     }
 }

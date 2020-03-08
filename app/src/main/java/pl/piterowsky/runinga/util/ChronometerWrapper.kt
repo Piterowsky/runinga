@@ -8,6 +8,7 @@ import android.widget.Chronometer
 import pl.piterowsky.runinga.R
 import java.util.*
 
+
 class ChronometerWrapper private constructor(context: Context) {
 
     companion object {
@@ -29,9 +30,7 @@ class ChronometerWrapper private constructor(context: Context) {
     init {
         chronometer.base = SystemClock.elapsedRealtime()
         chronometer.onChronometerTickListener = Chronometer.OnChronometerTickListener { chronometer ->
-            val time = SystemClock.elapsedRealtime() - chronometer.base - TimeZone.getDefault().rawOffset
-            val format = "kk:mm:ss"
-            chronometer.text = DateFormat.format(format, time)
+            chronometer.text = getFormattedTime()
         }
     }
 
@@ -52,5 +51,13 @@ class ChronometerWrapper private constructor(context: Context) {
         timeWhenStopped = chronometer.base - SystemClock.elapsedRealtime()
         chronometer.stop()
     }
+
+    private fun getFormattedTime(): CharSequence {
+        val format = "kk:mm:ss"
+        val time = SystemClock.elapsedRealtime() - chronometer.base - TimeZone.getDefault().rawOffset
+        return DateFormat.format(format, time)
+    }
+
+    fun getSeconds() = TimeUtils.stringToSecondsFullFormat(chronometer.text.toString())
 
 }

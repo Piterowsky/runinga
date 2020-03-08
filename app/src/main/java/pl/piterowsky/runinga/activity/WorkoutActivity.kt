@@ -59,14 +59,14 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
         this.map = map!!
         map.uiSettings.isRotateGesturesEnabled = false
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(Settings.Global.MAP_INITIAL_POINT, 0f))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(Settings.MAP_INITIAL_POINT, 0f))
         setupMapPath(map)
-        currentPositionMarker = map.addMarker(MarkerOptions().position(Settings.Global.MAP_INITIAL_POINT))
+        currentPositionMarker = map.addMarker(MarkerOptions().position(Settings.MAP_INITIAL_POINT))
     }
 
     private fun setupMapPath(map: GoogleMap) {
         val polylineOptions = PolylineOptions()
-        polylineOptions.color(Settings.Global.PATH_COLOR)
+        polylineOptions.color(Settings.PATH_COLOR)
         polylineOptions.width(5f)
         this.polyline = map.addPolyline(polylineOptions)
     }
