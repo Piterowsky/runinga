@@ -28,6 +28,7 @@ class MainMenuActivity : AppCompatActivity() {
     private fun setupButtonsHandlers() {
         quickStartButton.setOnClickListener() { handleQuickStartButton() }
         virtualRivalButton.setOnClickListener() { handleRivalWorkoutButton() }
+        settingsButton.setOnClickListener() { handleSettingsButton() }
     }
 
     private fun setupButtons() {
@@ -45,6 +46,10 @@ class MainMenuActivity : AppCompatActivity() {
     private fun handleRivalWorkoutButton() {
         RivalMode.isActive = true
         startActivity(Intent(this, PreRivalWorkoutActivity::class.java))
+    }
+
+    private fun handleSettingsButton() {
+        startActivity(Intent(this, SettingsActivity::class.java))
     }
 
     private fun setupAnimations() {
