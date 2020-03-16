@@ -48,4 +48,7 @@ dependencies {
     // UI tests
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
+
+    // Database
+    implementation 'com.j256.ormlite:ormlite-android:5.0'
 }

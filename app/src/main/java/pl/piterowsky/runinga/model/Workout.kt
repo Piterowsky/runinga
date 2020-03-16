@@ -1,8 +1,11 @@
 package pl.piterowsky.runinga.model
 
+import com.j256.ormlite.field.DatabaseField
+import com.j256.ormlite.table.DatabaseTable
 import pl.piterowsky.runinga.config.RivalMode
 import pl.piterowsky.runinga.util.DistanceUtils
 
+@DatabaseTable(tableName = "workout")
 class Workout(private val workoutMode: WorkoutMode) {
 
     private val steps: MutableList<Step> = ArrayList()

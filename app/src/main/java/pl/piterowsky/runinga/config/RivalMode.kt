@@ -19,10 +19,17 @@ class RivalMode {
          * Format in hh:ss
          */
         var time: String = "";
+
+        fun getModeValue(): String {
+            return when(modeType) {
+                ModeType.PACE -> pace
+                ModeType.DISTANCE_PER_TIME -> "$distance / $time"
+            }
+        }
     }
 
     enum class ModeType {
         PACE,
-        DISTANCE_PER_TIME
+        DISTANCE_PER_TIME,
     }
 }

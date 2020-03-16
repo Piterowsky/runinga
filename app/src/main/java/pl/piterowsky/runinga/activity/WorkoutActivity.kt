@@ -3,10 +3,12 @@ package pl.piterowsky.runinga.activity
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -18,6 +20,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.piterowsky.runinga.R
 import pl.piterowsky.runinga.config.RivalMode
 import pl.piterowsky.runinga.config.Settings
+import pl.piterowsky.runinga.database.dao.WorkoutHistoryDao
+import pl.piterowsky.runinga.database.entity.WorkoutHistoryEntity
 import pl.piterowsky.runinga.service.api.WorkoutService
 import pl.piterowsky.runinga.service.impl.WorkoutServiceImpl
 import pl.piterowsky.runinga.util.PermissionUtils
@@ -84,6 +88,35 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun onClickStopButton() {
+        showEndWorkoutAlert()
+    }
+
+    private fun saveWorkoutHistory() {
+        val workoutHistoryEntity = WorkoutHistoryEntity()
+
+        workoutHistoryEntity.time =
+            (workoutService as WorkoutServiceImpl).getChronometerWrapper().getFormattedTime().toString()
+
+        if (RivalMode.isActive) {
+            workoutHistoryEntity.workoutModeName = resources.getString(
+                when (RivalMode.modeType) {
+                    RivalMode.ModeType.PACE -> R.string.rival_pace_mode_type
+                    RivalMode.ModeType.DISTANCE_PER_TIME -> R.string.rival_distance_per_time_mode_type
+                }
+            );
+
+            workoutHistoryEntity.workoutModeValue = RivalMode.getModeValue()
+        } else {
+            workoutHistoryEntity.workoutModeName = resources.getString(R.string.rival_free_mode_type)
+            workoutHistoryEntity.workoutModeValue =
+                (workoutService as WorkoutServiceImpl).getWorkout().getDistance().toString()
+        }
+
+        WorkoutHistoryDao(this).add(workoutHistoryEntity)
+        Log.i("DATABASE", "Saved workout to database")
+    }
+
+    private fun showEndWorkoutAlert() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.end_workout_alert_title))
             .setMessage(getString(R.string.end_workout_alert_message))
@@ -92,6 +125,7 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
                 DialogInterface.OnClickListener { _, _ ->
                     Toast.makeText(this, getString(R.string.end_workout_toast_workout_ended), Toast.LENGTH_SHORT).show()
                     workoutService.workoutStop()
+                    saveWorkoutHistory()
                     finish() // TODO: Go to the new intent -> Workout summary
                 })
             .show()

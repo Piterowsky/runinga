@@ -4,7 +4,7 @@ import pl.piterowsky.runinga.R
 import pl.piterowsky.runinga.config.Language
 import java.util.*
 
-class VoicesService {
+class VoicesUtil {
 
     var speedUpVoice: Int = R.raw.en_maja_speed_up
     var slowDownVoice: Int = R.raw.en_maja_slow_down

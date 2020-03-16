@@ -1,4 +1,4 @@
-package pl.piterowsky.runinga.util
+package pl.piterowsky.runinga.ui
 
 import android.app.Activity
 import android.content.Context
@@ -6,6 +6,7 @@ import android.os.SystemClock
 import android.text.format.DateFormat
 import android.widget.Chronometer
 import pl.piterowsky.runinga.R
+import pl.piterowsky.runinga.util.TimeUtils
 import java.util.*
 
 
@@ -52,12 +53,13 @@ class ChronometerWrapper private constructor(context: Context) {
         chronometer.stop()
     }
 
-    private fun getFormattedTime(): CharSequence {
+    fun getFormattedTime(): CharSequence {
         val format = "kk:mm:ss"
         val time = SystemClock.elapsedRealtime() - chronometer.base - TimeZone.getDefault().rawOffset
         return DateFormat.format(format, time)
     }
 
-    fun getSeconds() = TimeUtils.stringToSecondsFullFormat(chronometer.text.toString())
+    fun getSeconds() =
+        TimeUtils.stringToSecondsFullFormat(chronometer.text.toString())
 
 }

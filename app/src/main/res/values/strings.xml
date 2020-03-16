@@ -63,5 +63,8 @@
     <string name="settings_timer_delay_value">Timer delay value</string>
     <string name="settings_path_color">Path color</string>
     <string name="settings_zoom">Zoom</string>
+    <string name="rival_pace_mode_type">Pace</string>
+    <string name="rival_distance_per_time_mode_type">Distance per time</string>
+    <string name="rival_free_mode_type">Free</string>
 
 </resources>

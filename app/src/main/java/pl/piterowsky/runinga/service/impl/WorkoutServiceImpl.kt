@@ -9,17 +9,16 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import pl.piterowsky.runinga.R
 import pl.piterowsky.runinga.activity.WorkoutActivity
-import pl.piterowsky.runinga.config.Language
 import pl.piterowsky.runinga.config.RivalMode
 import pl.piterowsky.runinga.config.Settings
 import pl.piterowsky.runinga.model.*
 import pl.piterowsky.runinga.model.modes.DistancePerTimeWorkoutMode
 import pl.piterowsky.runinga.model.modes.PaceWorkoutMode
 import pl.piterowsky.runinga.service.api.WorkoutService
-import pl.piterowsky.runinga.util.ChronometerWrapper
+import pl.piterowsky.runinga.ui.ChronometerWrapper
 import pl.piterowsky.runinga.util.DistanceUtils
 import pl.piterowsky.runinga.util.LoggerTag
-import pl.piterowsky.runinga.util.VoicesService
+import pl.piterowsky.runinga.util.VoicesUtil
 import java.util.*
 import kotlin.concurrent.scheduleAtFixedRate
 import kotlin.math.absoluteValue
@@ -33,13 +32,13 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
     private lateinit var geolocationService: GeolocationService
     private lateinit var workout: Workout
     private lateinit var workoutTimer: Timer
-    private lateinit var voicesService: VoicesService
+    private lateinit var voicesUtil: VoicesUtil
 
     private var isWorkoutInitialized: Boolean = false
 
     init {
         if(RivalMode.isActive) {
-            voicesService = VoicesService()
+            voicesUtil = VoicesUtil()
         }
     }
 
@@ -101,7 +100,7 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
     private fun playDistanceReachedVoice() {
         if (isDistanceReached() && !workout.isDistanceReached) {
             workout.isDistanceReached = true
-            val voice = voicesService.reachedDistanceVoice
+            val voice = voicesUtil.reachedDistanceVoice
             val mp: MediaPlayer = MediaPlayer.create(context, voice)
             mp.start()
         }
@@ -124,7 +123,7 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
 
         if (shouldReminderBePlayed) {
             Log.i(LoggerTag.TAG_WORKOUT_TIMER, "Playing reminder, seconds = ${chronometerWrapper.getSeconds()}")
-            val voice = if (workout.isRivalWinning()) voicesService.speedUpVoice else voicesService.slowDownVoice
+            val voice = if (workout.isRivalWinning()) voicesUtil.speedUpVoice else voicesUtil.slowDownVoice
             val mp: MediaPlayer = MediaPlayer.create(context, voice)
             mp.start()
         }
@@ -184,6 +183,9 @@ class WorkoutServiceImpl(private val context: Context) : WorkoutService {
             }
         }
     }
+
+    fun getWorkout() = this.workout
+    fun getChronometerWrapper() = this.chronometerWrapper
 }
 
 
