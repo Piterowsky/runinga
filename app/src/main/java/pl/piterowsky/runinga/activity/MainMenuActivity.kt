@@ -6,7 +6,6 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import pl.piterowsky.runinga.R
 import pl.piterowsky.runinga.config.RivalMode
-import pl.piterowsky.runinga.config.Settings
 
 
 class MainMenuActivity : AppCompatActivity() {
@@ -29,6 +28,7 @@ class MainMenuActivity : AppCompatActivity() {
         quickStartButton.setOnClickListener() { handleQuickStartButton() }
         virtualRivalButton.setOnClickListener() { handleRivalWorkoutButton() }
         settingsButton.setOnClickListener() { handleSettingsButton() }
+        historyButton.setOnClickListener() { handleHistoryButton() }
     }
 
     private fun setupButtons() {
@@ -42,10 +42,13 @@ class MainMenuActivity : AppCompatActivity() {
         RivalMode.isActive = false
         startActivity(Intent(this, WorkoutActivity::class.java))
     }
-
     private fun handleRivalWorkoutButton() {
         RivalMode.isActive = true
         startActivity(Intent(this, PreRivalWorkoutActivity::class.java))
+    }
+
+    private fun handleHistoryButton() {
+        startActivity(Intent(this, HistoryActivity::class.java))
     }
 
     private fun handleSettingsButton() {

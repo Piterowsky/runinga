@@ -1,6 +1,7 @@
 package pl.piterowsky.runinga.activity
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +9,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -24,6 +24,7 @@ import pl.piterowsky.runinga.database.dao.WorkoutHistoryDao
 import pl.piterowsky.runinga.database.entity.WorkoutHistoryEntity
 import pl.piterowsky.runinga.service.api.WorkoutService
 import pl.piterowsky.runinga.service.impl.WorkoutServiceImpl
+import pl.piterowsky.runinga.util.DistanceUtils
 import pl.piterowsky.runinga.util.PermissionUtils
 
 class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -94,9 +95,15 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun saveWorkoutHistory() {
         val workoutHistoryEntity = WorkoutHistoryEntity()
 
-        workoutHistoryEntity.time =
-            (workoutService as WorkoutServiceImpl).getChronometerWrapper().getFormattedTime().toString()
+        setTime(workoutHistoryEntity)
+        setDistance(workoutHistoryEntity)
+        setWorkoutModeName(workoutHistoryEntity)
 
+        WorkoutHistoryDao(this).add(workoutHistoryEntity)
+        Log.i("DATABASE", "Saved workout to database")
+    }
+
+    private fun setWorkoutModeName(workoutHistoryEntity: WorkoutHistoryEntity) {
         if (RivalMode.isActive) {
             workoutHistoryEntity.workoutModeName = resources.getString(
                 when (RivalMode.modeType) {
@@ -104,16 +111,19 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
                     RivalMode.ModeType.DISTANCE_PER_TIME -> R.string.rival_distance_per_time_mode_type
                 }
             );
-
-            workoutHistoryEntity.workoutModeValue = RivalMode.getModeValue()
         } else {
             workoutHistoryEntity.workoutModeName = resources.getString(R.string.rival_free_mode_type)
-            workoutHistoryEntity.workoutModeValue =
-                (workoutService as WorkoutServiceImpl).getWorkout().getDistance().toString()
         }
+    }
 
-        WorkoutHistoryDao(this).add(workoutHistoryEntity)
-        Log.i("DATABASE", "Saved workout to database")
+    private fun setTime(workoutHistoryEntity: WorkoutHistoryEntity) {
+        workoutHistoryEntity.time =
+            (workoutService as WorkoutServiceImpl).getChronometerWrapper().getFormattedTime().toString()
+    }
+
+    private fun setDistance(workoutHistoryEntity: WorkoutHistoryEntity) {
+        workoutHistoryEntity.distance =
+            DistanceUtils.getDistanceRounded((workoutService as WorkoutServiceImpl).getWorkout().getDistance())
     }
 
     private fun showEndWorkoutAlert() {
@@ -126,7 +136,7 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
                     Toast.makeText(this, getString(R.string.end_workout_toast_workout_ended), Toast.LENGTH_SHORT).show()
                     workoutService.workoutStop()
                     saveWorkoutHistory()
-                    finish() // TODO: Go to the new intent -> Workout summary
+                    startActivity(Intent(this, HistoryActivity::class.java))
                 })
             .show()
     }

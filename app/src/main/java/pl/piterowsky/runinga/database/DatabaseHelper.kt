@@ -7,7 +7,7 @@ import com.j256.ormlite.support.ConnectionSource
 import com.j256.ormlite.table.TableUtils
 import pl.piterowsky.runinga.database.entity.WorkoutHistoryEntity
 
-class DatabaseHelper(context: Context) : OrmLiteSqliteOpenHelper(context, "runinga.db", null, 1) {
+class DatabaseHelper(context: Context) : OrmLiteSqliteOpenHelper(context, "runingaV2.db", null, 2) {
 
     override fun onCreate(database: SQLiteDatabase?, connectionSource: ConnectionSource?) {
         TableUtils.createTableIfNotExists(connectionSource, WorkoutHistoryEntity::class.java)

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+
+        android:id="@+id/history_table_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.HistoryActivity">
+
+    <TableRow android:background="@color/colorPrimary">
+        <TextView android:id="@+id/history_date"
+                  android:layout_width="wrap_content"
+                  android:text="@string/history_date"
+                  android:textAlignment="center"
+                  android:padding="12dp"
+                  android:background="@drawable/border"
+                  android:layout_weight="1"/>
+
+        <TextView android:id="@+id/history_workout_time"
+                  android:layout_width="wrap_content"
+                  android:textAlignment="center"
+                  android:background="@drawable/border"
+                  android:padding="12dp"
+                  android:text="@string/history_time"
+                  android:layout_weight="1"/>
+
+        <TextView android:id="@+id/distance"
+                  android:layout_width="wrap_content"
+                  android:textAlignment="center"
+                  android:background="@drawable/border"
+                  android:padding="12dp"
+                  android:text="@string/history_distance"
+                  android:layout_weight="1"/>
+
+        <TextView android:id="@+id/history_workout_mode"
+                  android:layout_width="wrap_content"
+                  android:textAlignment="center"
+                  android:padding="12dp"
+                  android:background="@drawable/border"
+                  android:text="@string/history_workout_mode"
+                  android:layout_weight="1"/>
+    </TableRow>
+
+
+</TableLayout>

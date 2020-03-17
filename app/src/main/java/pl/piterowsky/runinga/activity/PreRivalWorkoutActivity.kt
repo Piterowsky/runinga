@@ -59,7 +59,7 @@ class PreRivalWorkoutActivity : AppCompatActivity() {
     }
 
     private fun handleStartButton() {
-        RivalMode.distance = distanceInput.text.toString()
+        RivalMode.distance = distanceInput.text.toString().replace(",", ".")
         RivalMode.time = timeInput.text.toString()
         RivalMode.pace = paceInput.text.toString()
 

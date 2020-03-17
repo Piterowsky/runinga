@@ -45,5 +45,6 @@
               android:importantForAutofill="no"
               android:gravity="center"
               android:textSize="22sp"
+              android:digits="0123456789.,"
     />
 </LinearLayout>

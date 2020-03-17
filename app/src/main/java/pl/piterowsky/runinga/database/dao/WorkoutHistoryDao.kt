@@ -19,4 +19,5 @@ class WorkoutHistoryDao(context: Context) {
 
     fun queryForAll() = dao.queryForAll()
 
+    fun getDao() = dao
 }

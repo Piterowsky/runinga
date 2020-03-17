@@ -17,7 +17,7 @@ class WorkoutHistoryEntity {
     var workoutModeName: String? = null
 
     @DatabaseField
-    var workoutModeValue: String? = null
+    var distance: String? = null
 
     @DatabaseField
     var date: Date? = Date()
