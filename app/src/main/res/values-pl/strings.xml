@@ -33,11 +33,11 @@
     <string name="pre_workout_pace_label">Tempo (mm:ss)</string>
     <string name="pre_workout_provide_inputs">Wprowadź zmienne treningowe</string>
     <string name="pre_workout_start_button">Rozpocznij trening</string>
-    <string name="pre_workout_switch_mode_label">Dystans / Czas</string>
+    <string name="pre_workout_switch_mode_label">Tryb</string>
     <string name="pre_workout_time_label">Czas (HH:mm)</string>
     <string name="settings_timer_delay_value">Częstotliwość lokalizacji (ms)</string>
     <string name="settings_path_color">Kolor ścieżki (hex)</string>
-    <string name="settings_audio_frequency">Częstotliwość komunikatów głosowych</string>
+    <string name="settings_audio_frequency">Częstotliwość audio (s)</string>
     <string name="settings_apply">Zatwierdź</string>
     <string name="rival_pace_mode_type">Tempo</string>
     <string name="rival_free_mode_type">Swobodny</string>

@@ -46,7 +46,7 @@
             android:layout_gravity="center"/>
 
     <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
@@ -57,7 +57,7 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center"/>
     <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
@@ -68,7 +68,7 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center"/>
     <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
@@ -78,7 +78,7 @@
             android:layout_marginTop="10dp"
             android:id="@+id/settings_timer_delay"/>
     <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
@@ -98,8 +98,7 @@
             android:layout_rowSpan="2"
             android:layout_columnSpan="2"
             android:layout_marginTop="40dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
+
             android:id="@+id/settings_apply"/>
 </GridLayout>
 
