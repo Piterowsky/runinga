@@ -42,5 +42,6 @@
     <string name="rival_pace_mode_type">Tempo</string>
     <string name="rival_free_mode_type">Swobodny</string>
     <string name="rival_distance_per_time_mode_type">Dystans na czas</string>
+    <string name="messages_header">Runinga</string>
 
 </resources>
