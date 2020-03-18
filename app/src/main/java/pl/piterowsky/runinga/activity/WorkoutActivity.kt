@@ -118,7 +118,7 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setTime(workoutHistoryEntity: WorkoutHistoryEntity) {
         workoutHistoryEntity.time =
-            (workoutService as WorkoutServiceImpl).getChronometerWrapper().getFormattedTime().toString()
+            (workoutService as WorkoutServiceImpl).getChronometerWrapper().chronometer.text.toString()
     }
 
     private fun setDistance(workoutHistoryEntity: WorkoutHistoryEntity) {
@@ -134,8 +134,9 @@ class WorkoutActivity : AppCompatActivity(), OnMapReadyCallback {
                 getString(R.string.end_workout_alert_positive_button),
                 DialogInterface.OnClickListener { _, _ ->
                     Toast.makeText(this, getString(R.string.end_workout_toast_workout_ended), Toast.LENGTH_SHORT).show()
-                    workoutService.workoutStop()
                     saveWorkoutHistory()
+                    workoutService.workoutStop()
+                    finish()
                     startActivity(Intent(this, HistoryActivity::class.java))
                 })
             .show()

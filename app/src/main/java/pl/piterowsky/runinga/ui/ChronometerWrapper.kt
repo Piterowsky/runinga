@@ -25,7 +25,7 @@ class ChronometerWrapper private constructor(context: Context) {
         }
     }
 
-    private var chronometer: Chronometer = (context as Activity).findViewById(R.id.workout_chronometer)
+    var chronometer: Chronometer = (context as Activity).findViewById(R.id.workout_chronometer)
     private var timeWhenStopped: Long = 0
 
     init {
