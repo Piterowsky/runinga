@@ -42,27 +42,19 @@
     <string name="pre_workout_pace_label">Pace (mm:ss)</string>
     <string name="pre_workout_time_label">Time (HH:mm)</string>
     <string name="pre_workout_distance">Distance (km)</string>
-    <string name="pre_workout_provide_inputs">Provide inputs</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="pre_workout_provide_inputs">Provide workout variables</string>
 
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
 
     <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="settings_apply">Apply</string>
-    <string name="settings_audio_frequency">Audio frequency</string>
-    <string name="settings_timer_delay_value">Timer delay value</string>
-    <string name="settings_path_color">Path color</string>
-    <string name="settings_zoom">Zoom</string>
+    <string name="settings_audio_frequency">Audio messages frequency</string>
+    <string name="settings_timer_delay_value">Localization frequency (ms)</string>
+    <string name="settings_path_color">Path color (hex)</string>
+    <string name="settings_zoom"
+            translatable="false">Zoom</string>
     <string name="rival_pace_mode_type">Pace</string>
     <string name="rival_distance_per_time_mode_type">Distance per time</string>
     <string name="rival_free_mode_type">Free</string>
